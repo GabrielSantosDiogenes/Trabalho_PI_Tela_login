@@ -12,11 +12,11 @@ public class ConexaoBD {
 
     // Endereço do banco (localhost = meu próprio computador)
     private static final String URL    =
-        "jdbc:mysql://localhost:3306/etec_db";
+        "jdbc:mysql://localhost:3306/etec_db?serverTimezone=America/Sao_Paulo";
 
     // Usuário e senha do MySQL
     private static final String USUARIO = "root";
-    private static final String SENHA   = "sua_senha_aqui";
+    private static final String SENHA   = "tinCTrom";
 
     /**
      * Método que cria e retorna a conexão.

@@ -27,9 +27,10 @@ CREATE TABLE `usuarios` (
   `ra` varchar(20) NOT NULL,
   `senha` varchar(100) NOT NULL,
   `nome` varchar(100) DEFAULT NULL,
+  `turma` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ra` (`ra`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +39,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'123456','senha123','João Silva');
+INSERT INTO `usuarios` VALUES (1,'123456','senha123','João Silva',NULL),(2,'26009','214365','Gabriel Santos Diogenes','Química'),(4,'67890','67890','lucas brolezi','química');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-05 18:16:55
+-- Dump completed on 2026-05-06 22:05:56

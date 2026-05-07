@@ -9,11 +9,8 @@ import javax.swing.SwingUtilities;
 public class Trabalho_pi_tela_login {
 
     public static void main(String[] args) {
-
-        // SwingUtilities garante que a janela
-        // apareça na thread correta (boa prática)
         SwingUtilities.invokeLater(() -> {
-            TelaLogin tela = new TelaLogin();
+            TelaBoaVinda tela = new TelaBoaVinda();
             tela.setVisible(true);
         });
     }

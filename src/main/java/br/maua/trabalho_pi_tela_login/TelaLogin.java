@@ -54,11 +54,31 @@ public class TelaLogin extends JFrame {
         JLabel lblRA = criarLabel("Registro do Aluno (RA)");
         campoRA = new JTextField();
         estilizarCampo(campoRA, "Digite seu RA");
-
-        // Campo Senha
-        JLabel lblSenha = criarLabel("Senha");
+        
+        // Cria o campoSenha ANTES do painelSenha
         campoSenha = new JPasswordField();
         estilizarCampo(campoSenha, "••••••••");
+        
+        // Campo Senha
+        JPanel painelSenha = new JPanel(new BorderLayout());
+        painelSenha.setBackground(Color.WHITE);
+        painelSenha.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
+        painelSenha.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JLabel lblSenha = criarLabel("Senha");
+        JLabel lblEsqueci = new JLabel("Esqueci minha senha");
+        lblEsqueci.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblEsqueci.setForeground(new Color(122, 32, 48));
+        lblEsqueci.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblEsqueci.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                new TelaEsqueciSenha().setVisible(true);
+                dispose();
+            }
+        });
+
+        painelSenha.add(lblSenha, BorderLayout.WEST);
+        painelSenha.add(lblEsqueci, BorderLayout.EAST);
 
         // Botão Entrar
         btnEntrar = new JButton("→  Entrar");
@@ -73,7 +93,7 @@ public class TelaLogin extends JFrame {
         painel.add(Box.createRigidArea(new Dimension(0,6)));
         painel.add(campoRA);
         painel.add(Box.createRigidArea(new Dimension(0,18)));
-        painel.add(lblSenha);
+        painel.add(painelSenha);
         painel.add(Box.createRigidArea(new Dimension(0,6)));
         painel.add(campoSenha);
         painel.add(Box.createRigidArea(new Dimension(0,28)));

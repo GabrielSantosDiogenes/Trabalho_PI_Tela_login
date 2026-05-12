@@ -33,8 +33,11 @@ public class Autenticacao {
 
             // 4. Se encontrou algum registro...
             if (rs.next()) {
+                int idEncontrado = rs.getInt("id");
                 String nomeEncontrado = rs.getString("nome");
-                return new Usuario(ra, senha, nomeEncontrado);
+                String tipoEncontrado = rs.getString("tipo");
+                
+                return new Usuario(idEncontrado, ra, senha, nomeEncontrado, tipoEncontrado);
             }
 
         } catch (Exception e) {

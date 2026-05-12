@@ -132,6 +132,8 @@ public class TelaLogin extends JFrame {
                 "Sucesso",
                 JOptionPane.INFORMATION_MESSAGE
             );
+            new TelaMenu(usuario).setVisible(true); // ← muda para TelaMenu
+            dispose(); 
             // Aqui você abriria a próxima tela
         } else {
             JOptionPane.showMessageDialog(

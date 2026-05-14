@@ -179,80 +179,95 @@ public class TelaJogo extends JFrame {
             "Peça Selecionada",
             JOptionPane.INFORMATION_MESSAGE);
     }
-
+    
+    
     private void encaixarPeca() {
-        if (pecaSelecionada == null) {
-            JOptionPane.showMessageDialog(this,
-                "Primeiro selecione uma peça!",
-                "Atenção",
-                JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Primeira peça — vai direto
-        if (cadeia.isEmpty()) {
-            cadeia.add(pecaSelecionada);
-            pecas.remove(pecaSelecionada);
-            acertos++;
-            lblAcertos.setText("Acertos: " + acertos);
-            atualizarCadeia();
-            atualizarMao();
-            pecaSelecionada = null;
-            verificarCadeiaCompleta();
-            return;
-        }
-
-        // Verifica se encaixa com a última peça
-        String[] ultimaPeca = cadeia.get(cadeia.size() - 1);
-        String ultimoLado = ultimaPeca[1];
-
-        if (ultimoLado.equalsIgnoreCase(pecaSelecionada[0]) ||
-            ultimoLado.equalsIgnoreCase(pecaSelecionada[1])) {
-
-            // Encaixou!
-            if (ultimoLado.equalsIgnoreCase(pecaSelecionada[1])) {
-                // Inverte a peça se necessário
-                cadeia.add(new String[]{pecaSelecionada[1], pecaSelecionada[0]});
-            } else {
-                cadeia.add(pecaSelecionada);
-            }
-            pecas.remove(pecaSelecionada);
-            acertos++;
-            tentativas = 0; // reseta tentativas ao acertar
-            lblAcertos.setText("Acertos: " + acertos);
-            atualizarCadeia();
-            atualizarMao();
-            pecaSelecionada = null;
-            verificarCadeiaCompleta();
-
-        } else {
-            // Errou!
-            tentativas++;
-            erros++;
-            lblErros.setText("Erros: " + erros);
-
-            if (tentativas >= MAX_ERROS) {
-                // Resetar pontuação!
-                JOptionPane.showMessageDialog(this,
-                    "Você errou " + MAX_ERROS + " vezes seguidas!\n" +
-                    "A pontuação foi resetada!",
-                    "Muitos erros!",
-                    JOptionPane.ERROR_MESSAGE);
-                acertos = 0;
-                tentativas = 0;
-                lblAcertos.setText("Acertos: " + acertos);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                    "Essa peça não encaixa aqui!\n" +
-                    "A cadeia termina em: " + ultimoLado + "\n" +
-                    "Tentativas restantes: " + (MAX_ERROS - tentativas),
-                    "Não encaixou!",
-                    JOptionPane.ERROR_MESSAGE);
-            }
-            pecaSelecionada = null;
-        }
+    if (pecaSelecionada == null) {
+        JOptionPane.showMessageDialog(this,
+            "Primeiro selecione uma peça!",
+            "Atenção", JOptionPane.WARNING_MESSAGE);
+        return;
     }
 
+    // Primeira peça — vai direto
+    if (cadeia.isEmpty()) {
+        cadeia.add(new String[]{pecaSelecionada[0], pecaSelecionada[1]});
+        pecas.remove(pecaSelecionada);
+        acertos++;
+        tentativas = 0;
+        lblAcertos.setText("Acertos: " + acertos);
+        atualizarCadeia();
+        atualizarMao();
+        pecaSelecionada = null;
+        verificarCadeiaCompleta();
+        return;
+    }
+
+    // Pega o último lado da cadeia
+    String[] ultimaPeca = cadeia.get(cadeia.size() - 1);
+    String ultimoLado = ultimaPeca[1];
+
+    // Tenta encaixar pelo lado_a
+    boolean encaixaNormal    = ultimoLado.equalsIgnoreCase(pecaSelecionada[0]);
+    // Tenta encaixar pelo lado_b (invertida)
+    boolean encaixaInvertido = ultimoLado.equalsIgnoreCase(pecaSelecionada[1]);
+
+    if (encaixaNormal) {
+        cadeia.add(new String[]{pecaSelecionada[0], pecaSelecionada[1]});
+        confirmarEncaixe();
+    } else if (encaixaInvertido) {
+        cadeia.add(new String[]{pecaSelecionada[1], pecaSelecionada[0]});
+        confirmarEncaixe();
+    } else {
+        // Errou!
+        tentativas++;
+        erros++;
+        lblErros.setText("Erros: " + erros);
+
+        if (tentativas >= MAX_ERROS) {
+            JOptionPane.showMessageDialog(this,
+                "Você errou " + MAX_ERROS + " vezes seguidas!\n" +
+                "Pontuação e tela resetadas!",
+                "Muitos erros!", JOptionPane.ERROR_MESSAGE);
+
+            // Reseta TUDO
+            acertos = 0;
+            erros = 0;
+            tempo = 0;
+            tentativas = 0;
+            cadeiaAtual = 0;
+            lblAcertos.setText("Acertos: " + acertos);
+            lblErros.setText("Erros: " + erros);
+            lblTempo.setText("Tempo: " + tempo + "s");
+
+            // Devolve peças da cadeia para a mão
+            pecas.addAll(cadeia);
+            cadeia.clear();
+            Collections.shuffle(pecas);
+
+            atualizarCadeia();
+            atualizarMao();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "Essa peça não encaixa aqui!\n" +
+                "A cadeia termina em: " + ultimoLado + "\n" +
+                "Tentativas restantes: " + (MAX_ERROS - tentativas),
+                "Não encaixou!", JOptionPane.ERROR_MESSAGE);
+        }
+        pecaSelecionada = null;
+    }
+}
+
+private void confirmarEncaixe() {
+    pecas.remove(pecaSelecionada);
+    acertos++;
+    tentativas = 0;
+    lblAcertos.setText("Acertos: " + acertos);
+    atualizarCadeia();
+    atualizarMao();
+    pecaSelecionada = null;
+    verificarCadeiaCompleta();
+}
     private void atualizarCadeia() {
         painelCadeia.removeAll();
         for (String[] peca : cadeia) {
